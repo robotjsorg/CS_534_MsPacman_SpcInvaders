@@ -26,7 +26,14 @@ git clone https://github.com/jmcmahon443/CS_534_MsPacman.git
 ```
 python sample1.py
 ```
-
 ```
 python sample2.py
+```
+
+## Agents
+[See OpenAI example agents](https://github.com/openai/gym/tree/master/examples/agents)
+
+Manually controlled agent
+```
+python manual.py
 ```
