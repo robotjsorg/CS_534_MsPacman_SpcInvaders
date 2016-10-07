@@ -43,3 +43,4 @@ UCB Reinforcement
 cd reinforcement_ucb
 python pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 1 -n 10 -l originalClassic -g 'DirectionalGhost'
 ```
+[RL Tutorials](http://ai.berkeley.edu/reinforcement.html)
