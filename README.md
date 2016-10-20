@@ -24,16 +24,10 @@ git clone https://github.com/jmcmahon443/CS_534_MsPacman.git
 
 ## Samples
 ```
-python do_nothing.py
+python sample1.py
 ```
 ```
-python random.py
-```
-```
-python reinforcement_learning.py
-```
-```
-python reinforcement_learning_with_difference_vector.py
+python sample2.py
 ```
 
 ## Agents
