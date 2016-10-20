@@ -3,8 +3,7 @@ Reinforcement Learning for Ms. Pacman
 
 ## Installation Instructions
 ```
-pip install gym
-pip install gym[atari]
+pip install gym gym[atari]
 ```
 
 On OSX or maxOS:
@@ -24,10 +23,16 @@ git clone https://github.com/jmcmahon443/CS_534_MsPacman.git
 
 ## Samples
 ```
-python sample1.py
+python do_nothing.py
 ```
 ```
-python sample2.py
+python do_random.py
+```
+```
+python reinforcement_learning.py
+```
+```
+python reinforcement_learning_with_difference_vector.py
 ```
 
 ## Agents

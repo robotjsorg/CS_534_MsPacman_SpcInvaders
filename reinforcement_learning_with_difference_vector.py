@@ -4,7 +4,7 @@ import numpy as np
 
 env = gym.make('MsPacman-v0')
 
-def run_episode(env, parameters):
+def run_episode(env):
     observation = env.reset()
     last_observation = 0
     reward_total = 0
@@ -24,7 +24,7 @@ def run_episode(env, parameters):
             parameters = np.zeros((9, 100800))
 
             for pixel in changed_pixels:
-                parameters[:,pixel] = np.random.rand(9)
+                parameters[:, pixel] = np.random.rand(9)
 
         last_observation = observation
 
@@ -36,7 +36,7 @@ def run_episode(env, parameters):
 
         if done:
             break
-    return reward_total
+    return parameters, reward_total
 
 def train():
     num_episodes = 1000
@@ -45,8 +45,7 @@ def train():
 
     for n in xrange(1000):
         print "Episode: ", n
-        parameters = np.random.rand(9, 100800)
-        reward = run_episode(env, parameters)
+        parameters, reward = run_episode(env)
 
         if reward > best_reward:
             best_reward = reward
@@ -57,7 +56,7 @@ def train():
 
     return best_param, best_reward
 
-if __name__=="__main__":
+if __name__ == "__main__":
     p, r = train()
     print p
     print r

@@ -29,7 +29,6 @@ def key_press(key, mod):
 def key_release(key, mod):
     global human_agent_action
     a = int( key - ord('0') )
-    print(a)
     if a <= 0 or a >= ACTIONS: return
     if human_agent_action == a:
         human_agent_action = 0
@@ -45,7 +44,7 @@ def rollout(env):
     skip = 0
     for t in range(ROLLOUT_TIME):
         if not skip:
-            #print("taking action {}".format(human_agent_action))
+            print("taking action {}".format(human_agent_action))
             a = human_agent_action
             skip = SKIP_CONTROL
         else:
