@@ -10,7 +10,7 @@ def run_episode(env, parameters):
         env.render()
         observation = observation.reshape([100800, 1])
         parameters = np.random.rand(9, 100800)
-        score= np.matmul(parameters, observation)
+        score = np.matmul(parameters, observation)
         action = np.argmax(score)
         observation, reward, done, info = env.step(action)
         reward_total = reward_total + reward
@@ -26,7 +26,7 @@ def train():
         print "Episode: ", n
         parameters = np.random.rand(9, 100800)
         reward = run_episode(env, parameters)
-        if reward>best_reward:
+        if reward > best_reward:
             best_reward = reward
             best_param = parameters
         if reward == 2000:
