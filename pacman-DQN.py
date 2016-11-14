@@ -7,11 +7,7 @@ from keras.optimizers import *
 from skimage.transform import resize
 from skimage.color import rgb2gray
 
-
-
-
 class Brain:
-
     def __init__(self, stateCnt, actionCnt):
         self.stateCnt = stateCnt
         self.actionCnt = actionCnt
@@ -38,7 +34,6 @@ class Brain:
 
     def predictOne(self, s):
         return self.predict(s.reshape(1, self.stateCnt)).flatten()
-
 
 class Memory:
     a = []
@@ -89,8 +84,6 @@ class Agent:
 
     def memLen(self):
         return self.memory.getMemoryLength()
-
-
 
     def replay(self):
         batch = self.memory.sample(BATCH_SIZE)
@@ -177,8 +170,6 @@ class Environment:
         state = state.reshape(1,7056)
         return state
 
-
-
 PROBLEM = 'MsPacman-v0'
 env = Environment(PROBLEM)
 
@@ -194,6 +185,3 @@ while True:
     env.run(agent)
     print "Episode Done"
     i = i+1
-
-
-

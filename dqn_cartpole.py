@@ -1,11 +1,9 @@
 from keras.models import Sequential
 from keras.layers import Dense
-import gym
-env = gym.make('CartPole-v0')
 import numpy as np
-import random
-import collections
+import collections, random, gym
 
+env = gym.make('CartPole-v0')
 
 model = Sequential()
 model.add(Dense(20,init='uniform',input_shape=(4,),activation='relu'))
@@ -73,5 +71,3 @@ while True:
             break
         state = new_state
     epi = epi + 1
-
-

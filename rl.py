@@ -1,5 +1,15 @@
-import gym
+import gym, os, io
 import numpy as np
+
+functionname, _ = os.path.splitext(__file__)
+n = 0
+filename = "analysis/"+functionname+str(n)+".txt"
+while os.path.isfile(filename):
+    n = n + 1
+    filename = "analysis/"+functionname+str(n)+".txt"
+print filename
+with io.FileIO(filename, "w") as file:
+    file.write("Episode, Score, Timesteps\n")
 
 env = gym.make('MsPacman-v0')
 
@@ -8,6 +18,7 @@ def run_episode(env):
     reward_total = 0
     parameters = np.random.rand(9, 100800)
 
+    timesteps = 0
     for t in xrange(2000):
         env.render()
         observation = observation.reshape([100800, 1])
@@ -17,30 +28,24 @@ def run_episode(env):
         reward_total = reward_total + reward
 
         if done:
+            timesteps = t + 1
             break
-    return parameters, reward_total
+    return parameters, reward_total, timesteps
 
 def train():
-    num_episodes = 1000
     best_param = 0
     best_reward = 0
-    average_reward = 0
 
-    for n in xrange(1000):
-        print "Episode: ", n
-        parameters, reward = run_episode(env)
-        average_reward = ((n)*average_reward + reward)/(n+1)
-        print("reward")
-        print(reward)
-        print("average_reward")
-        print(average_reward)
+    for e in xrange(1000):
+        parameters, reward, timesteps = run_episode(env)
+
+        print "Episode %d finished with score of %d after %d timesteps" % (e+1, reward, timesteps)
+        with io.FileIO(filename, "a") as file:
+            file.write("%d, %d, %d\n" % (e+1, reward, timesteps))
 
         if reward > best_reward:
             best_reward = reward
             best_param = parameters
-
-        if reward == 2000:
-            break
 
 if __name__ == "__main__":
     p, r = train()
