@@ -1,3 +1,4 @@
+#!/bin/python
 import random, numpy, math, gym
 
 from keras.models import Sequential
