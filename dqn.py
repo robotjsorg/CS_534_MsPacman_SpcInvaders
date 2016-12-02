@@ -158,12 +158,9 @@ class Environment:
             s = s_
             R += r
 
-            print "Episode %d finished with score of %d" % (i+1, R)
-            with io.FileIO(filename, "a") as file:
-                file.write("%d, %d\n" % (i+1, R))
-
             if done:
                 break
+    return R
 
     def preprocess(self,state):
         state = state[0:171,:]
@@ -192,5 +189,9 @@ agent = Agent(stateCnt, actionCnt)
 
 i = 1
 while True:
-    env.run(agent)
-    i = i+1
+    R = env.run(agent)
+    i = i + 1
+    
+    print "Episode %d finished with score of %d" % (i+1, R)
+    with io.FileIO(filename, "a") as file:
+        file.write("%d, %d\n" % (i+1, R))
