@@ -56,7 +56,7 @@ class Brain:
         return self.model.predict(s)
 
     def predictTest(self,s):
-        self.loadModel('pacman-basic.h5')
+        self.loadModel('pacman-basic_cnn.h5')
         return self.testModel.predict(s)
 
     def predictOne(self, s):
@@ -174,10 +174,12 @@ class Environment:
 
 functionname, _ = os.path.splitext(__file__)
 n = 0
-filename = "analysis/"+functionname+str(n)+".csv"
+#filename = "analysis/"+functionname+str(n)+".csv"
+filename = functionname+str(n)+".csv"
 while os.path.isfile(filename):
     n = n + 1
-    filename = "analysis/"+functionname+str(n)+".csv"
+    #filename = "analysis/"+functionname+str(n)+".csv"
+    filename = functionname+str(n)+".csv"
 print filename
 with io.FileIO(filename, "w") as file:
     file.write("Episode, Score\n")

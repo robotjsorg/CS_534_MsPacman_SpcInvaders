@@ -38,6 +38,10 @@ class Brain:
     def predict(self, s):
         return self.model.predict(s)
 
+    def predictTest(self,s):
+        self.loadModel('pacman-basic_dqn.h5')
+        return self.testModel.predict(s)
+
     def predictOne(self, s):
         return self.predict(s.reshape(1, self.stateCnt)).flatten()
 
@@ -156,10 +160,12 @@ class Environment:
 
 functionname, _ = os.path.splitext(__file__)
 n = 0
-filename = "analysis/"+functionname+str(n)+".csv"
+#filename = "analysis/"+functionname+str(n)+".csv"
+filename = functionname+str(n)+".csv"
 while os.path.isfile(filename):
     n = n + 1
-    filename = "analysis/"+functionname+str(n)+".csv"
+    #filename = "analysis/"+functionname+str(n)+".csv"
+    filename = functionname+str(n)+".csv"
 print filename
 with io.FileIO(filename, "w") as file:
     file.write("Episode, Score\n")
@@ -172,9 +178,14 @@ stateCnt = 7056
 actionCnt = env.env.action_space.n
 
 agent = Agent(stateCnt, actionCnt)
-
-for e in range(100):
+bestReward = 1700
+for e in range(500):
     R = env.run(agent)
+
+    #Save best weights
+    if R > bestReward:
+        agent.brain.model.save("pacman-basic_dqn.h5")
+        bestReward = R
     
     print "Episode %d finished with score of %d" % (e+1, R)
     with io.FileIO(filename, "a") as file:
