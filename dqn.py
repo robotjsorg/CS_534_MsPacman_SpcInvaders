@@ -158,12 +158,12 @@ class Environment:
             s = s_
             R += r
 
+            print "Episode %d finished with score of %d" % (i+1, R)
+            with io.FileIO(filename, "a") as file:
+                file.write("%d, %d\n" % (i+1, R))
+
             if done:
                 break
-
-        print "Episode %d finished with score of %d" % (i+1, R)
-        with io.FileIO(filename, "a") as file:
-            file.write("%d, %d\n" % (i+1, R))
 
     def preprocess(self,state):
         state = state[0:171,:]
