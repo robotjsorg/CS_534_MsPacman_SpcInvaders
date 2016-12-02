@@ -11,7 +11,7 @@ with io.FileIO(filename, "w") as file:
     file.write("Episode, Score\n")
 
 env = gym.make('MsPacman-v0')
-for e in range(20):
+for e in range(500):
     reward_total = 0
     observation = env.reset()
     for t in range(100000):
@@ -22,5 +22,5 @@ for e in range(20):
         if done:
             print "Episode %d finished with score of %d" % (e+1, reward_total, t+1)
             with io.FileIO(filename, "a") as file:
-                file.write("%d, %d, %d\n" % (e+1, reward_total))
+                file.write("%d, %d\n" % (e+1, reward_total))
             break

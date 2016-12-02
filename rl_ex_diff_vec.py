@@ -42,7 +42,7 @@ def train():
     best_param = 0
     best_reward = 0
 
-    for e in xrange(1000):
+    for e in xrange(500):
         parameters, reward = run_episode(env)
 
         print "Episode %d finished with score of %d" % (e+1, reward)
