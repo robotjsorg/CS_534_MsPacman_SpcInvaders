@@ -199,7 +199,7 @@ class Environment:
 
             if done:
                 break
-	return R
+        return R
 
     def preprocess(self,state):
         state = state[0:171,:]
