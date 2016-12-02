@@ -1,10 +1,4 @@
-FRAME_WIDTH = 84
-FRAME_HEIGHT = 84
-STATE_LENGTH = 4
-
-import math,random, numpy, gym
-
-import json
+import math, random, numpy, gym, json, h5py, os, io
 from keras import initializations
 from keras.initializations import normal, identity
 from keras.models import model_from_json
@@ -12,10 +6,20 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten
 from keras.layers.convolutional import Convolution2D, MaxPooling2D
 from keras.optimizers import SGD , Adam
-
 from skimage.transform import resize
 from skimage.color import rgb2gray
-import h5py
+
+FRAME_WIDTH = 84
+FRAME_HEIGHT = 84
+STATE_LENGTH = 4
+MEMORY_CAPACITY = 100000
+BATCH_SIZE = 64
+GAMMA = 0.99
+MAX_EPSILON = 1
+MIN_EPSILON = 0.01
+LAMBDA = 0.001
+MEMORY_TRAINING_BEGIN = 1000
+
 class Brain:
     def __init__(self, stateCnt, actionCnt):
         self.stateCnt = stateCnt
@@ -78,15 +82,6 @@ class Memory:
     def getMemoryLength(self):
         return len(self.a)
 
-MEMORY_CAPACITY = 100000
-BATCH_SIZE = 64
-
-GAMMA = 0.99
-
-MAX_EPSILON = 1
-MIN_EPSILON = 0.01
-LAMBDA = 0.001
-
 class Agent:
     def __init__(self,stateCnt, actionCnt):
         self.stateCnt = stateCnt
@@ -136,8 +131,6 @@ class Agent:
                 targets[i,action_t] = reward_t + GAMMA*numpy.amax(q_sa)
 
         self.brain.train(inputs,targets)
-
-MEMORY_TRAINING_BEGIN = 1000
 
 class Environment:
     def __init__(self, problem):

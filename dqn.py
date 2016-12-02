@@ -1,11 +1,18 @@
 import random, numpy, gym, os, io
-
 from keras.models import Sequential
 from keras.layers import *
 from keras.optimizers import *
-
 from skimage.transform import resize
 from skimage.color import rgb2gray
+
+MEMORY_CAPACITY = 100000
+BATCH_SIZE = 64
+
+GAMMA = 0.99
+
+MAX_EPSILON = 1
+MIN_EPSILON = 0.01
+LAMBDA = 0.001
 
 class Brain:
     def __init__(self, stateCnt, actionCnt):
@@ -53,15 +60,6 @@ class Memory:
     def getMemoryLength(self):
         return len(self.a)
 
-MEMORY_CAPACITY = 100000
-BATCH_SIZE = 64
-
-GAMMA = 0.99
-
-MAX_EPSILON = 1
-MIN_EPSILON = 0.01
-LAMBDA = 0.001 # speed of decay
-
 class Agent:
     def __init__(self,stateCnt, actionCnt):
         self.stateCnt = stateCnt
@@ -96,15 +94,10 @@ class Agent:
         s_ = numpy.array([(no_state if o[3] is None else o[3]) for o in batch])
 
         s = s[:,0,:]
-        #print s_.shape
         s_ = s_[:,0,:]
-        #print s.shape
-        #print s_.shape
 
         p = self.brain.predict(s)
         p_ = self.brain.predict(s_)
-
-        #print p.shape
 
         x = numpy.zeros((batchLen,self.stateCnt))
         y= numpy.zeros((batchLen,self.actionCnt))
