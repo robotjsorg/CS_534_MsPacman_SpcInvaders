@@ -173,7 +173,7 @@ actionCnt = env.env.action_space.n
 
 agent = Agent(stateCnt, actionCnt)
 
-for e in range(500):
+for e in range(100):
     R = env.run(agent)
     
     print "Episode %d finished with score of %d" % (e+1, R)
