@@ -1,4 +1,4 @@
-import random, numpy, gym
+import random, numpy, gym, os, io
 
 from keras.models import Sequential
 from keras.layers import *
@@ -60,7 +60,7 @@ GAMMA = 0.99
 
 MAX_EPSILON = 1
 MIN_EPSILON = 0.01
-LAMBDA = 0.001      # speed of decay
+LAMBDA = 0.001 # speed of decay
 
 class Agent:
     def __init__(self,stateCnt, actionCnt):
@@ -77,7 +77,6 @@ class Agent:
             action = random.randint(0,self.actionCnt - 1)
 
         return action
-
 
     def observe(self,sample):
         self.memory.add2memory(sample)
@@ -161,14 +160,23 @@ class Environment:
 
             if done:
                 break
-
-        print("Total reward:", R)
+        return R
 
     def preprocess(self,state):
         state = state[0:171,:]
         state = resize(rgb2gray(state), (84, 84))
-        state = state.reshape(1,7056)
+        state = state.reshape(1, 7056)
         return state
+
+functionname, _ = os.path.splitext(__file__)
+n = 0
+filename = "analysis/"+functionname+str(n)+".csv"
+while os.path.isfile(filename):
+    n = n + 1
+    filename = "analysis/"+functionname+str(n)+".csv"
+print filename
+with io.FileIO(filename, "w") as file:
+    file.write("Episode, Score\n")
 
 PROBLEM = 'MsPacman-v0'
 env = Environment(PROBLEM)
@@ -181,7 +189,9 @@ agent = Agent(stateCnt, actionCnt)
 
 i = 1
 while True:
-    print i," Episode: ",
-    env.run(agent)
-    print "Episode Done"
-    i = i+1
+    R = env.run(agent)
+    i = i + 1
+    
+    print "Episode %d finished with score of %d" % (i+1, R)
+    with io.FileIO(filename, "a") as file:
+        file.write("%d, %d\n" % (i+1, R))

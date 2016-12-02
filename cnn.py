@@ -148,14 +148,7 @@ class Agent:
         batch = self.memory.sample(BATCH_SIZE)
         batchLen = len(batch)
 
-        #print "Batch: ",batch[0][0].shape
-        #print "BatchLen: ",batchLen
-        
-        #print p.shape
-
-        #x = numpy.zeros((batchLen,self.stateCnt))
         inputs = numpy.zeros((batchLen, 4, 84, 84))
-        #y= numpy.zeros((batchLen,self.actionCnt))
         targets = numpy.zeros((inputs.shape[0], self.actionCnt))
 
         for i in range(batchLen):
@@ -169,15 +162,12 @@ class Agent:
             targets[i] = self.brain.predict(state_t)
             q_sa = self.brain.predict(state_t1)
 
-            #t = p[i]
             if terminal_state:
                 targets[i,action_t] = reward_t
             else:
                 targets[i,action_t] = reward_t + GAMMA*numpy.amax(q_sa)
 
-        
-
-        self.brain.train(inputs,targets)   #train_on_batch...use this in keras
+        self.brain.train(inputs,targets)
 
 MEMORY_TRAINING_BEGIN = 1000
 
@@ -193,21 +183,15 @@ class Environment:
         s_t = numpy.stack((x_t, x_t, x_t, x_t), axis=0)
         s_t = s_t.reshape(1, s_t.shape[0], s_t.shape[1], s_t.shape[2])
         while True:
-            #self.env.render()
-            #s = self.preprocess(s)
             a = agent.act(s_t)
 
             x_t1, r, done, info = self.env.step(a)
             x_t1 = self.preprocessorConv(x_t1)
             x_t1 = x_t1.reshape(1,1,84,84)
-            #if done: # terminal state
-                #x_t1 = None
-            #s_ = self.preprocess(s_)
             s_t1 = numpy.append(x_t1, s_t[:, :3, :, :], axis=1)
             agent.observe( (s_t, a, r, s_t1,done) )
 
             if agent.memLen() > MEMORY_TRAINING_BEGIN:
-                #print "In replay"
                 agent.replay()
 
             s_t = s_t1
@@ -215,41 +199,7 @@ class Environment:
 
             if done:
                 break
-
-        print("Total reward:", R)
-	return R
-
-    def testRun(self, agent,filename):
-        #testModel = agent.brain.model.load_model(filename)
-        s = self.env.reset()
-        R = 0
-        s = self.preprocess(s)
-        while True:
-            self.env.render()
-            #s = self.preprocess(s)
-            a = agent.actTest(s)
-
-            s_, r, done, info = self.env.step(a)
-            s_ = self.preprocess(s_)
-            if done: # terminal state
-                s_ = None
-            #s_ = self.preprocess(s_)
-
-            #agent.observe( (s, a, r, s_) )
-
-            #if agent.memLen() > MEMORY_TRAINING_BEGIN:
-                #print "In replay"
-            #    agent.replay()
-
-            s = s_
-            R += r
-
-            if done:
-                break
-
-        print("Total reward:", R)
-    #return R
-
+        return R
 
     def preprocess(self,state):
         state = state[0:171,:]
@@ -258,12 +208,20 @@ class Environment:
         return state
 
     def preprocessorConv(self,state):
-        #state = state[0:171,:]
         state = resize(rgb2gray(state), (84, 84))
-        #state = state.reshape(84,84)
         return state
 
-TEST_FLAG =False
+functionname, _ = os.path.splitext(__file__)
+n = 0
+filename = "analysis/"+functionname+str(n)+".csv"
+while os.path.isfile(filename):
+    n = n + 1
+    filename = "analysis/"+functionname+str(n)+".csv"
+print filename
+with io.FileIO(filename, "w") as file:
+    file.write("Episode, Score\n")
+
+TEST_FLAG = False
 PROBLEM = 'MsPacman-v0'
 env = Environment(PROBLEM)
 
@@ -275,22 +233,14 @@ agent = Agent(stateCnt, actionCnt)
 
 i = 1
 bestReward = 200
-#env.env.monitor.start('~/python/ai/pr/jar/pacman-experiment-1',force = True)
-#while True and not TEST_FLAG:
-for i in range(3):
-    print i," Episode: ",
+
+while True:
     R = env.run(agent)
-    print "Episode Done"
-    i = i+1
-    if R>bestReward:
+    i = i + 1
+    if R > bestReward:
         agent.brain.model.save("pacman-basic.h5")
         bestReward = R
 
-#env.env.monitor.close()
-#testModel = agent.brain.model.load_model('my_model.h5')
-#while True and TEST_FLAG:
-
-'''env.env.monitor.start('log/pacman-experiment-1',force = True)
-env.testRun(agent,'pacman-basic.h5')
-env.env.monitor.close()'''
-
+    print "Episode %d finished with score of %d" % (i+1, R)
+    with io.FileIO(filename, "a") as file:
+        file.write("%d, %d\n" % (i+1, R))
