@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-N = 40
+N = 80
 
 def movingaverage(interval, window_size):
     window = np.ones(int(window_size))/float(window_size)
@@ -20,7 +20,7 @@ for file in os.listdir('./analysis'):
 
 # plt.xlim(0, 500)
 plt.title('Moving Average N = '+str(N))
-plt.legend()
+plt.legend(loc=3)
 plt.xlabel('Episode')
 plt.ylabel('Score')
 plt.grid(True)
