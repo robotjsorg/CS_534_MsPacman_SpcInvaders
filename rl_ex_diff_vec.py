@@ -28,8 +28,8 @@ def run_episode(env):
         changed_pixels = np.transpose(np.nonzero(diff_observation))[:, 0]
         last_observation = observation
 
-        score = np.matmul(parameters, diff_observation)         # calculate each action's score
-        action = np.argmax(score)                               # choose the action with the highest score
+        score = np.matmul(parameters, diff_observation)
+        action = np.argmax(score)
 
         observation, reward, done, info = env.step(action)
         reward_total = reward_total + reward
