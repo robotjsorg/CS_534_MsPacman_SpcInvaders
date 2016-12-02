@@ -20,10 +20,8 @@ def run_episode(env):
     last_observation = 0
     parameters = np.random.rand(9, 100800)
 
-    timesteps = 0
     for t in xrange(2000):
-        env.render()
-        
+        # env.render()
         observation = observation.reshape([100800, 1])
 
         diff_observation = observation - last_observation
@@ -37,9 +35,8 @@ def run_episode(env):
         reward_total = reward_total + reward
 
         if done:
-            timesteps = t + 1
             break
-    return parameters, reward_total, timesteps
+    return parameters, reward_total
 
 def train():
     num_episodes = 1000
@@ -48,11 +45,11 @@ def train():
     average_reward = 0
 
     for e in xrange(1000):
-        parameters, reward, timesteps = run_episode(env)
+        parameters, reward = run_episode(env)
 
-        print "Episode %d finished with score of %d after %d timesteps" % (e+1, reward, timesteps)
+        print "Episode %d finished with score of %d" % (e+1, reward)
         with io.FileIO(filename, "a") as file:
-            file.write("%d, %d, %d\n" % (e+1, reward, timesteps))
+            file.write("%d, %d\n" % (e+1, reward))
 
         if reward > best_reward:
             best_reward = reward

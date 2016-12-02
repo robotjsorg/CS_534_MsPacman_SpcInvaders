@@ -19,7 +19,7 @@ def run_episode(env):
     parameters = np.random.rand(9, 100800)
 
     for t in xrange(2000):
-        env.render()
+        # env.render()
         observation = observation.reshape([100800, 1])
         score = np.matmul(parameters, observation)
         action = np.argmax(score)

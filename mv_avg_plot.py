@@ -12,9 +12,11 @@ for file in os.listdir('./analysis'):
         d = np.loadtxt(open('analysis/'+file, 'rb'), delimiter=',', skiprows=1)
         plt.plot(d[:,0], d[:,1], marker='o', linestyle='')
         mv_av = movingaverage(d[:,1], 10)
-        plt.plot(d[:,0], mv_av)
+        file = file.replace(' ', '')[:-4].lower()
+        plt.plot(d[:,0], mv_av, label=file)
 
 # plt.xlim(0, 500)
+plt.legend()
 plt.xlabel('Episode')
 plt.ylabel('Score')
 plt.grid(True)
