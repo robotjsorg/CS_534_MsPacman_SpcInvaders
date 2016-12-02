@@ -168,12 +168,14 @@ class Environment:
     def preprocess(self,state):
         state = state[0:171,:]
         state = resize(rgb2gray(state), (84, 84))
-        state = state.reshape(1,7056)
+        state = state.reshape(1, 7056)
         return state
 
 functionname, _ = os.path.splitext(__file__)
+n = 0
 filename = "analysis/"+functionname+str(n)+".csv"
 while os.path.isfile(filename):
+    n = n + 1
     filename = "analysis/"+functionname+str(n)+".csv"
 print filename
 with io.FileIO(filename, "w") as file:
