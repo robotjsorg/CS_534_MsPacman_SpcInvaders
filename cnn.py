@@ -1,19 +1,8 @@
-#!/bin/python
-#SBATCH -N 1
-#SBATCH -p exclusive
-#SBATCH -o tf_test.out
-#SBATCH -t 24:00:00
-#SBATCH --gres=gpu:2
 FRAME_WIDTH = 84
 FRAME_HEIGHT = 84
 STATE_LENGTH = 4
 
 import math,random, numpy, gym
-
-#from keras.models import Sequential
-#from keras.models import load_model
-#from keras.layers import *
-#from keras.optimizers import *
 
 import json
 from keras import initializations
@@ -35,21 +24,6 @@ class Brain:
         self.model = self.createModel()
 
     def createModel(self):
-        '''model = Sequential()
-
-        model.add(Dense(output_dim=64, activation='relu', input_dim=stateCnt))
-        model.add(Dense(output_dim=64, activation='relu', input_dim=stateCnt))
-        model.add(Dense(output_dim=actionCnt, activation='linear'))
-
-        opt = RMSprop(lr=0.00025)
-        model.compile(loss='mse', optimizer=opt)
-        model.add(Convolution2D(32, 8, 8, subsample=(4, 4), activation='relu', input_shape=(STATE_LENGTH, FRAME_WIDTH, FRAME_HEIGHT)))
-        model.add(Convolution2D(64, 4, 4, subsample=(2, 2), activation='relu'))
-        model.add(Convolution2D(64, 3, 3, subsample=(1, 1), activation='relu'))
-        model.add(Flatten())
-        model.add(Dense(512, activation='relu'))
-        model.add(Dense(self.num_actions,activation = "linear"))'''
-
         model = Sequential()
         model.add(Convolution2D(32, 8, 8, subsample=(4,4),init=lambda shape, name: normal(shape, scale=0.01, name=name), border_mode='same',input_shape=(4,84,84)))
         model.add(Activation('relu'))
@@ -64,7 +38,6 @@ class Brain:
        
         adam = Adam(lr=1e-6)
         model.compile(loss='mse',optimizer=adam)
-
 
         return model
 
@@ -83,8 +56,7 @@ class Brain:
         return self.testModel.predict(s)
 
     def predictOne(self, s):
-        return self.predict(s.reshape(1, self.stateCnt)).flatten()\
-
+        return self.predict(s.reshape(1, self.stateCnt)).flatten()
 
     def predictOneTest(self,s):
         return self.predictTest(s.reshape(1,self.stateCnt)).flatten()
@@ -97,7 +69,6 @@ class Memory:
     def add2memory(self, s):
         if len(self.a)>self.capacity :
             self.a.pop(0)
-
         self.a.append(s)
 
     def sample(self,n):
@@ -114,7 +85,7 @@ GAMMA = 0.99
 
 MAX_EPSILON = 1
 MIN_EPSILON = 0.01
-LAMBDA = 0.001      # speed of decay
+LAMBDA = 0.001
 
 class Agent:
     def __init__(self,stateCnt, actionCnt):
@@ -126,17 +97,14 @@ class Agent:
 
     def act(self,state):
         if random.random() > MIN_EPSILON:
-            #action = numpy.argmax(self.brain.predictOne(state))
             action = numpy.argmax(self.brain.predict(state))
         else:
             action = random.randint(0,self.actionCnt - 1)
-
         return action
 
     def actTest(self,state):
         action = numpy.argmax(self.brain.predictOneTest(state))
         return action
-
 
     def observe(self,sample):
         self.memory.add2memory(sample)
@@ -231,16 +199,14 @@ actionCnt = env.env.action_space.n
 
 agent = Agent(stateCnt, actionCnt)
 
-i = 1
 bestReward = 200
-
-while True:
+for e in range(500):
     R = env.run(agent)
-    i = i + 1
+
     if R > bestReward:
         agent.brain.model.save("pacman-basic.h5")
         bestReward = R
 
-    print "Episode %d finished with score of %d" % (i+1, R)
+    print "Episode %d finished with score of %d" % (e+1, R)
     with io.FileIO(filename, "a") as file:
-        file.write("%d, %d\n" % (i+1, R))
+        file.write("%d, %d\n" % (e+1, R))
