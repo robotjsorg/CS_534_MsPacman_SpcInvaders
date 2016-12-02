@@ -2,13 +2,13 @@
 #SBATCH -N 1
 #SBATCH -p exclusive
 #SBATCH -o tf_test.out
-#SBATCH -t 1:00:00
+#SBATCH -t 24:00:00
 #SBATCH --gres=gpu:2
 FRAME_WIDTH = 84
 FRAME_HEIGHT = 84
 STATE_LENGTH = 4
 
-import random, numpy, gym
+import math,random, numpy, gym
 
 #from keras.models import Sequential
 #from keras.models import load_model
