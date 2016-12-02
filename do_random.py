@@ -15,7 +15,7 @@ for e in range(20):
     reward_total = 0
     observation = env.reset()
     for t in range(100000):
-        env.render()
+        # env.render()
         action = env.action_space.sample()
         observation, reward, done, info = env.step(action)
         reward_total = reward_total + reward
