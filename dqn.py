@@ -7,12 +7,11 @@ from skimage.color import rgb2gray
 
 MEMORY_CAPACITY = 100000
 BATCH_SIZE = 64
-
 GAMMA = 0.99
-
 MAX_EPSILON = 1
 MIN_EPSILON = 0.01
 LAMBDA = 0.001
+MEMORY_TRAINING_BEGIN = 1000
 
 class Brain:
     def __init__(self, stateCnt, actionCnt):
@@ -121,8 +120,6 @@ class Agent:
 
         self.brain.train(x,y)
 
-MEMORY_TRAINING_BEGIN = 1000
-
 class Environment:
     def __init__(self, problem):
         self.problem = problem
@@ -133,19 +130,15 @@ class Environment:
         R = 0
         s = self.preprocess(s)
         while True:
-            #self.env.render()
-            #s = self.preprocess(s)
             a = agent.act(s)
 
             s_, r, done, info = self.env.step(a)
             s_ = self.preprocess(s_)
-            if done: # terminal state
+            if done:
                 s_ = None
-            #s_ = self.preprocess(s_)
             agent.observe( (s, a, r, s_) )
 
             if agent.memLen() > MEMORY_TRAINING_BEGIN:
-                #print "In replay"
                 agent.replay()
 
             s = s_
