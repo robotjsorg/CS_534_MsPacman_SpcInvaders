@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-N = 60
+N = 32
 
 def movingaverage(interval, window_size):
     window = np.ones(int(window_size))/float(window_size)

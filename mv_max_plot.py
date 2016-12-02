@@ -19,10 +19,10 @@ plt.hold(True)
 for file in os.listdir('./analysis'):
     if file.endswith('.csv'):
         d = np.loadtxt(open('analysis/'+file, 'rb'), delimiter=',', skiprows=1)
-        mv_max = movingmax(d[:,1])
         file = file.replace(' ', '')[:-4].lower()
 
         # plt.plot(d[:,0], d[:,1], marker='o', linestyle='')
+        mv_max = movingmax(d[:,1])
         plt.plot(d[:,0], mv_max, label=file)
 
 plt.xlim(0, 100)
