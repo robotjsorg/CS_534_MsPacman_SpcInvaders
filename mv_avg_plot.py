@@ -1,25 +1,21 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
-# read the input data file
-d = np.loadtxt(open("analysis/rl0.csv","rb"),delimiter=",",skiprows=1)
-d = np.transpose(d)
-print(d[1])
+def movingaverage(interval, window_size):
+    window = np.ones(int(window_size))/float(window_size)
+    return np.convolve(interval, window, 'same')
 
-# make a plot of it
-# plt.plot(d[1], marker="o", linestyle="")
-# plt.show()
+plt.hold(True)
+for file in os.listdir('./analysis'):
+    if file.endswith('.csv'):
+        d = np.loadtxt(open('analysis/'+file, 'rb'), delimiter=',', skiprows=1)
+        plt.plot(d[:,0], d[:,1], marker='o', linestyle='')
+        mv_av = movingaverage(d[:,1], 10)
+        plt.plot(d[:,0], mv_av)
 
-# make a moving average n = 10
-a = []
-mv_avg = 0
-for i in range(0, len(d[1])):
-	if i > 10:
-		mv_avg = 
-		a.append(mv_avg)
-	else:
-		a.append(d[1][i])
-
-# plot it again
-plt.plot(d[1], marker="o", linestyle="")
+# plt.xlim(0, 500)
+plt.xlabel('Episode')
+plt.ylabel('Score')
+plt.grid(True)
 plt.show()
