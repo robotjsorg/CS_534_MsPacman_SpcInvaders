@@ -60,7 +60,7 @@ GAMMA = 0.99
 
 MAX_EPSILON = 1
 MIN_EPSILON = 0.01
-LAMBDA = 0.001      # speed of decay
+LAMBDA = 0.001 # speed of decay
 
 class Agent:
     def __init__(self,stateCnt, actionCnt):
@@ -77,7 +77,6 @@ class Agent:
             action = random.randint(0,self.actionCnt - 1)
 
         return action
-
 
     def observe(self,sample):
         self.memory.add2memory(sample)
@@ -173,10 +172,8 @@ class Environment:
         return state
 
 functionname, _ = os.path.splitext(__file__)
-n = 0
 filename = "analysis/"+functionname+str(n)+".csv"
 while os.path.isfile(filename):
-    n = n + 1
     filename = "analysis/"+functionname+str(n)+".csv"
 print filename
 with io.FileIO(filename, "w") as file:

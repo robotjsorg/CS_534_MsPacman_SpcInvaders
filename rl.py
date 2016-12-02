@@ -2,10 +2,8 @@ import gym, os, io
 import numpy as np
 
 functionname, _ = os.path.splitext(__file__)
-n = 0
 filename = "analysis/"+functionname+str(n)+".csv"
 while os.path.isfile(filename):
-    n = n + 1
     filename = "analysis/"+functionname+str(n)+".csv"
 print filename
 with io.FileIO(filename, "w") as file:
