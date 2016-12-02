@@ -3,6 +3,7 @@
 *.swp
 *.pyc
 *.py~
+*.out
 .DS_Store
 
 # Setuptools distribution and build folders.
