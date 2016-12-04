@@ -28,7 +28,13 @@ def run_episode(env):
         changed_pixels = np.transpose(np.nonzero(diff_observation))[:, 0]
         last_observation = observation
 
-        score = np.matmul(parameters, diff_observation)
+        dice = np.random.rand()
+        threshold = 0.9
+        if dice > threshold:
+            score = np.matmul(parameters, diff_observation)
+        else:
+            score = np.matmul(best_parameters, diff_observation)
+
         action = np.argmax(score)
 
         observation, reward, done, info = env.step(action)
