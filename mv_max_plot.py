@@ -25,7 +25,7 @@ for file in os.listdir('./analysis'):
         mv_max = movingmax(d[:,1])
         plt.plot(d[:,0], mv_max, label=file)
 
-plt.xlim(0, 100)
+plt.xlim(0, 1000)
 plt.title('Moving Maximum')
 plt.legend(loc=4)
 plt.xlabel('Episode')
