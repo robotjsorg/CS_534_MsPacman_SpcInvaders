@@ -15,20 +15,22 @@ def movingmax(interval):
     mv_max = np.array(mv_max)
     return mv_max
 
-plt.hold(True)
+fig = plt.figure()
+ax = plt.subplot(111)
+ax.hold(True)
 for file in os.listdir('./analysis'):
     if file.endswith('.csv'):
         d = np.loadtxt(open('analysis/'+file, 'rb'), delimiter=',', skiprows=1)
         file = file.replace(' ', '')[:-4].lower()
-
-        # plt.plot(d[:,0], d[:,1], marker='o', linestyle='')
         mv_max = movingmax(d[:,1])
-        plt.plot(d[:,0], mv_max, label=file)
+        ax.plot(d[:,0], mv_max, label=file)
 
 plt.xlim(0, 1000)
 plt.title('Moving Maximum')
-plt.legend(loc=4)
+box = ax.get_position()
+ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
 plt.xlabel('Episode')
 plt.ylabel('Score')
-plt.grid(True)
+ax.grid(True)
 plt.show()
