@@ -13,7 +13,7 @@ with io.FileIO(filename, "w") as file:
 
 env = gym.make('MsPacman-v0')
 
-def run_episode(env):
+def run_episode(env, best_parameters):
     observation = env.reset()
     reward_total = 0
 
@@ -45,11 +45,11 @@ def run_episode(env):
     return parameters, reward_total
 
 def train():
-    best_param = 0
+    best_param = np.zeros((9, 100800))
     best_reward = 0
 
-    for e in xrange(100):
-        parameters, reward = run_episode(env)
+    for e in xrange(1000):
+        parameters, reward = run_episode(env, best_param)
 
         print "Episode %d finished with score of %d" % (e+1, reward)
         with io.FileIO(filename, "a") as file:
