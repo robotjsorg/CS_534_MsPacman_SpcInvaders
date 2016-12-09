@@ -48,6 +48,7 @@ class Brain:
     def loadModel(self,filename):
         self.testModel = load_model(filename)
 
+
     def train(self, x, y, epoch=1, verbose=0):
         self.model.fit(x, y, batch_size=64, nb_epoch=epoch, verbose=verbose)
 

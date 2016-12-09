@@ -11,7 +11,7 @@ print filename
 with io.FileIO(filename, "w") as file:
     file.write("Episode, Score\n")
 
-env = gym.make('MsPacman-v0')
+env = gym.make('SpaceInvaders-v0')
 actLen = env.action_space.n
 vecLen = np.prod(np.shape(env.observation_space.low))
 
@@ -26,7 +26,7 @@ def run_episode(env, best_parameters):
         observation = observation.reshape([vecLen, 1])
         
         dice = np.random.rand()
-        threshold = 0.6
+        threshold = 0.8
         if dice > threshold:
             score = np.matmul(parameters, observation)
         else:

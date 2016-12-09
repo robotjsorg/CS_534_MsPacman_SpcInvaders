@@ -10,7 +10,7 @@ print filename
 with io.FileIO(filename, "w") as file:
     file.write("Episode, Score\n")
 
-env = gym.make('MsPacman-v0')
+env = gym.make('SpaceInvaders-v0')
 for e in range(1000):
     reward_total = 0
     observation = env.reset()

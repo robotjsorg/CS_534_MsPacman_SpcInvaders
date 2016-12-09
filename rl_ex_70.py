@@ -12,16 +12,18 @@ with io.FileIO(filename, "w") as file:
     file.write("Episode, Score\n")
 
 env = gym.make('MsPacman-v0')
+actLen = env.action_space.n
+vecLen = np.prod(np.shape(env.observation_space.low))
 
 def run_episode(env, best_parameters):
     observation = env.reset()
     reward_total = 0
 
-    parameters = np.random.rand(9, 100800)
+    parameters = np.random.rand(actLen, vecLen)
 
     for t in xrange(2000):
         # env.render()
-        observation = observation.reshape([100800, 1])
+        observation = observation.reshape([vecLen, 1])
         
         dice = np.random.rand()
         threshold = 0.7
@@ -40,7 +42,7 @@ def run_episode(env, best_parameters):
     return parameters, reward_total
 
 def train():
-    best_param = np.random.rand(9, 100800)
+    best_param = np.random.rand(actLen, vecLen)
     best_reward = 0
 
     for e in xrange(1000):
