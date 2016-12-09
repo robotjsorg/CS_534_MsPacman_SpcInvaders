@@ -30,7 +30,7 @@ def run_episode(env, best_parameters):
     for t in xrange(2000):
         # env.render()
         dice = np.random.rand()
-        threshold = 0.8
+        threshold = 0.7
         if dice > threshold:
             score = np.matmul(parameters, observation)
         else:
