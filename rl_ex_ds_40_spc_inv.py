@@ -13,7 +13,7 @@ print filename
 with io.FileIO(filename, "w") as file:
     file.write("Episode, Score\n")
 
-env = gym.make('MsPacman-v0')
+env = gym.make('SpaceInvaders-v0')
 actLen = env.action_space.n
 vecLen = np.prod(np.shape(env.observation_space.low))
 newImgDim = 84
@@ -62,7 +62,6 @@ def train():
             best_param = parameters
 
 def preprocess(state):
-    state = state[0:171,:]
     state = resize(rgb2gray(state), (newImgDim, newImgDim))
     state = state.reshape([newVecLen, 1])
     return state
