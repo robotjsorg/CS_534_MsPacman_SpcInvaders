@@ -163,7 +163,6 @@ class Environment:
         return R
 
     def preprocess(self,state):
-        state = state[0:171,:]
         state = resize(rgb2gray(state), (84, 84))
         state = state.reshape(1,7056)
         return state
