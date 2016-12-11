@@ -1,7 +1,5 @@
 import gym, os, io
 import numpy as np
-from skimage.transform import resize
-from skimage.color import rgb2gray
 
 functionname, _ = os.path.splitext(__file__)
 n = 0
@@ -13,24 +11,22 @@ print filename
 with io.FileIO(filename, "w") as file:
     file.write("Episode, Score\n")
 
-env = gym.make('MsPacman-v0')
+env = gym.make('SpaceInvaders-v0')
 actLen = env.action_space.n
 vecLen = np.prod(np.shape(env.observation_space.low))
-newImgDim = 84
-newVecLen = newImgDim**2
 
 def run_episode(env, best_parameters):
     observation = env.reset()
-    observation = preprocess(observation)
-
     reward_total = 0
 
-    parameters = np.random.rand(actLen, newVecLen)
+    parameters = np.random.rand(actLen, vecLen)
 
     for t in xrange(2000):
         # env.render()
+        observation = observation.reshape([vecLen, 1])
+        
         dice = np.random.rand()
-        threshold = 0.5
+        threshold = 0.6
         if dice > threshold:
             score = np.matmul(parameters, observation)
         else:
@@ -39,7 +35,6 @@ def run_episode(env, best_parameters):
         action = np.argmax(score)
 
         observation, reward, done, info = env.step(action)
-        observation = preprocess(observation)
         reward_total = reward_total + reward
 
         if done:
@@ -47,7 +42,7 @@ def run_episode(env, best_parameters):
     return parameters, reward_total
 
 def train():
-    best_param = np.random.rand(actLen, newVecLen)
+    best_param = np.random.rand(actLen, vecLen)
     best_reward = 0
 
     for e in xrange(1000):
@@ -60,12 +55,6 @@ def train():
         if reward > best_reward:
             best_reward = reward
             best_param = parameters
-
-def preprocess(state):
-    state = state[0:171,:]
-    state = resize(rgb2gray(state), (newImgDim, newImgDim))
-    state = state.reshape([newVecLen, 1])
-    return state
 
 if __name__ == "__main__":
     p, r = train()

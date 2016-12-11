@@ -22,8 +22,29 @@ for file in os.listdir('./analysis'):
     if file.endswith('.csv'):
         d = np.loadtxt(open('analysis/'+file, 'rb'), delimiter=',', skiprows=1)
         file = file.replace(' ', '')[:-4].lower()
-        mv_max = movingmax(d[:,1])
-        ax.plot(d[:,0], mv_max, label=file)
+
+        color = ''
+        if file.startswith('do_nothing'):
+            color = 'c'
+        if file.startswith('do_random'):
+            color = 'r'
+        if file.startswith('rl'):
+            color = 'g'
+        if file.startswith('dqn'):
+            color = 'b'
+        if file.startswith('cnn'):
+            color = 'm'
+
+        if file.startswith('dqn_99_spc_inv'):
+            f1000d = d[1000:, :]
+            mv_max = movingmax(f1000d[:, 1])
+            ax.plot(d[1000:, 0], mv_max, label=file+'_first_1000', color=color)
+            l1000d = d[:1000, :]
+            mv_max = movingmax(l1000d[:, 1])
+            ax.plot(d[:1000, 0], mv_max, label=file+'_last_1000', color=color)
+        else:
+            mv_max = movingmax(d[:,1])
+            ax.plot(d[:,0], mv_max, label=file, color=color)
 
 plt.xlim(0, 1000)
 plt.title('Moving Maximum')

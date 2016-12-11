@@ -14,9 +14,32 @@ ax.hold(True)
 for file in os.listdir('./analysis'):
     if file.endswith('.csv'):
         d = np.loadtxt(open('analysis/'+file, 'rb'), delimiter=',', skiprows=1)
-        mv_av = movingaverage(d[:,1], N)
         file = file.replace(' ', '')[:-4].lower()
-        ax.plot(d[:,0], mv_av, label=file)
+
+        color = ''
+        if file.startswith('do_nothing'):
+            color = 'c'
+        if file.startswith('do_random'):
+            color = 'r'
+        if file.startswith('rl'):
+            color = 'g'
+        if file.startswith('dqn'):
+            color = 'b'
+        if file.startswith('cnn'):
+            color = 'm'
+
+        # if file.startswith('dqn_99_spc_inv') or file.startswith('cnn_99_spc_inv'):
+        if file.startswith('dqn_99_spc_inv'):
+            f1000d = d[1000:, :]
+            mv_av = movingaverage(f1000d[:, 1], N)
+            ax.plot(d[1000:, 0], mv_av, label=file+'_first_1000', color=color)
+            l1000d = d[:1000, :]
+            mv_av = movingaverage(l1000d[:, 1], N)
+            ax.plot(d[:1000, 0], mv_av, label=file+'_last_1000', color=color)
+        else:
+            mv_av = movingaverage(d[:,1], N)
+            ax.plot(d[:,0], mv_av, label=file, color=color)
+
 
 plt.xlim(0, 1000)
 plt.title('Moving Average N = '+str(N))
