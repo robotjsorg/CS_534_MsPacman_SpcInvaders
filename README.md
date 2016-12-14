@@ -21,31 +21,19 @@ apt-get install -y python-numpy python-dev cmake zlib1g-dev libjpeg-dev xvfb lib
 git clone https://github.com/jmcmahon443/CS_534_MsPacman.git
 ```
 
-## Samples
+## Sample Agents
 ```
 python do_nothing.py
 ```
 ```
 python do_random.py
 ```
-```
-python reinforcement_learning.py
-```
-```
-python reinforcement_learning_with_difference_vector.py
-```
 
-## Agents
-[See OpenAI example agents](https://github.com/openai/gym/tree/master/examples/agents)
-
-Manually controlled agent
+## Analysis
+These functions analyze whatever `.csv` files are in the `/analysis/` folder.
 ```
-python manual.py
+python last_100_avg_std.py
 ```
-
-UCB Reinforcement
 ```
-cd reinforcement_ucb
-python pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 1 -n 10 -l originalClassic -g 'DirectionalGhost'
+python mv_avg_plot.py
 ```
-[RL Tutorials](http://ai.berkeley.edu/reinforcement.html)
