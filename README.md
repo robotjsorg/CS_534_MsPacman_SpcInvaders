@@ -72,5 +72,5 @@ python mv_avg_plot.py
 ```
 ## References:
 [1]:https://www.cs.toronto.edu/~vmnih/docs/dqn.pdf
-[2]: http://neuro.cs.ut.ee/demystifying-deep-reinforcement-learning/
-[3]: https://jaromiru.com/2016/09/27/lets-make-a-dqn-theory/
+[2][http://neuro.cs.ut.ee/demystifying-deep-reinforcement-learning/]
+[3][https://jaromiru.com/2016/09/27/lets-make-a-dqn-theory/]
